@@ -45,8 +45,8 @@ def loadData(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
-    loadArtists(catalog)
     loadArtworks(catalog)
+    loadArtists(catalog)
 
 def loadArtists(catalog):
     """
@@ -57,7 +57,7 @@ def loadArtists(catalog):
     artistsFile = cf.data_dir + 'Artists-utf8-small.csv'
     input_file = csv.DictReader(open(artistsFile, encoding='utf-8'))
     for artist in input_file:
-        model.addBook(catalog, artist)
+        model.addArtist(catalog, artist)
 
 def loadArtworks(catalog):
     """

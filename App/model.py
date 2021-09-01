@@ -51,6 +51,12 @@ def newCatalog():
 
     return catalog
 # Funciones para agregar informacion al catalogo
+def addArtwork(catalog, artwork):
+    lt.addLast(catalog["artworks"],artwork)
+    # Se adiciona el libro a la lista de libros
+def addArtist(catalog, artist):
+    # Se adiciona el libro a la lista de libros
+    lt.addLast(catalog["artists"],artist)
 
 
 # Funciones para creacion de datos
@@ -59,5 +65,9 @@ def newCatalog():
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+def compareartworks(title1, artworks):
+    if (title1.lower() in artworks['Title'].lower()):
+        return 0
+    return -1
 
 # Funciones de ordenamiento

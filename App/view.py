@@ -47,6 +47,39 @@ def printMenu():
 
 catalog = None
 
+def initCatalog():
+    """
+    Inicializa el catalogo de libros
+    """
+    return controller.initCatalog()
+    
+def loadData(catalog):
+    """
+    Carga los libros en la estructura de datos
+    """
+    controller.loadData(catalog)
+
+def printartwork(artwork):
+    print('Titulo: ' + artwork['Title'] )
+def printartist(artist):
+    print('Nombre: ' + artist['DisplayName'] )
+def imprimir_ultimostresworks(lista):
+    print("Estos son las ultimas tres obras: ")
+    contador=0
+    puesto=lt.size(lista)
+    while contador<3:
+        printartwork(lt.getElement(lista,puesto))
+        puesto+=-1
+        contador+=1
+def imprimir_ultimostresartist(lista):
+    print("Estos son los ultimos tres artistas: ")
+    contador=0
+    puesto=lt.size(lista)
+    while contador<3:
+        printartist(lt.getElement(lista,puesto))
+        puesto+=-1
+        contador+=1
+
 """
 Menu principal
 """
@@ -55,7 +88,14 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-
+        catalog = initCatalog()
+        loadData(catalog)
+        print('Obras Cargadas: ' + str(lt.size(catalog['artworks'])))
+        lista=catalog["artworks"]
+        imprimir_ultimostresworks(lista)
+        print('Autores cargados: ' + str(lt.size(catalog['artists'])))
+        lista=catalog["artists"]
+        imprimir_ultimostresartist(lista)
     elif int(inputs[0]) == 2:
         pass
 
