@@ -49,20 +49,22 @@ catalog = None
 
 def initCatalog():
     """
-    Inicializa el catalogo de libros
+    Inicializa el catalogo
     """
     return controller.initCatalog()
     
 def loadData(catalog):
     """
-    Carga los libros en la estructura de datos
+    Carga los datos en la estructura de datos
     """
     controller.loadData(catalog)
 
 def printartwork(artwork):
     print('Titulo: ' + artwork['Title'] )
+
 def printartist(artist):
     print('Nombre: ' + artist['DisplayName'] )
+
 def imprimir_ultimostresworks(lista):
     print("Estos son las ultimas tres obras: ")
     contador=0
@@ -71,6 +73,7 @@ def imprimir_ultimostresworks(lista):
         printartwork(lt.getElement(lista,puesto))
         puesto+=-1
         contador+=1
+
 def imprimir_ultimostresartist(lista):
     print("Estos son los ultimos tres artistas: ")
     contador=0

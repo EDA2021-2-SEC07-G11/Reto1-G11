@@ -50,9 +50,7 @@ def loadData(catalog):
 
 def loadArtists(catalog):
     """
-    Carga los libros del archivo.  Por cada libro se toman sus autores y por
-    cada uno de ellos, se crea en la lista de autores, a dicho autor y una
-    referencia al libro que se esta procesando.
+    Carga los artistas del archivo. 
     """
     artistsFile = cf.data_dir + 'Artists-utf8-small.csv'
     input_file = csv.DictReader(open(artistsFile, encoding='utf-8'))
@@ -61,7 +59,7 @@ def loadArtists(catalog):
 
 def loadArtworks(catalog):
     """
-    Carga todos los tags del archivo y los agrega a la lista de tags
+    Carga todas las obras de arte del archivo
     """
     artworksFile = cf.data_dir + 'Artworks-utf8-small.csv'
     input_file = csv.DictReader(open(artworksFile, encoding='utf-8'))
