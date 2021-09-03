@@ -64,6 +64,13 @@ def addArtist(catalog, artist):
 
 # Funciones de consulta
 
+def darListaNacionalidades(artistas):
+    nacionalidades = lt.newList()
+    for artista in artistas:
+        if(artista['Nacionalidad'] not in nacionalidades):
+            lt.addLast(nacionalidades, artista['Nacionalidad'])
+    return nacionalidades
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compareartworks(title1, artworks):
     if (title1.lower() in artworks['Title'].lower()):
@@ -71,3 +78,11 @@ def compareartworks(title1, artworks):
     return -1
 
 # Funciones de ordenamiento
+def ordenarObrasPorNacionalidad(artistas, obras):
+    obrasNacionalidades = lt.newList()
+    for obra in obras:
+        for id in obra['ConstituentID']:
+            for artista in artistas:
+                if(artista['ConstituentID'] == id):
+                    obrasNacionalidades
+
