@@ -60,16 +60,36 @@ def addArtist(catalog, artist):
 
 
 # Funciones para creacion de datos
-
+def darObrasdeArtista(idArtista, obras):
+    obrasArtista = lt.newList()
+    for obra in obras:
+        artistasObra = obra['ConstituentID']
+        if idArtista in artistasObra:
+            lt.addLast(obrasArtista, obra)
+    return obrasArtista
 
 # Funciones de consulta
 
 def darListaNacionalidades(artistas):
     nacionalidades = lt.newList()
     for artista in artistas:
-        if(artista['Nacionalidad'] not in nacionalidades):
-            lt.addLast(nacionalidades, artista['Nacionalidad'])
+        obras = lt.newList()
+        if(artista['Nacionalidad'] not in nacionalidades['Nombre']):
+            elemento = {'Nombre': '', 'CantidadObras': 0, 'Obras': None}
+            lt.addLast(nacionalidades, {artista['Nacionalidad'],0, obras})
     return nacionalidades
+
+def darObrasNacionalidades(artistas, obras):
+    nacionalidades = darListaNacionalidades(artistas)
+    for artista in artistas:
+        obrasArtista = darObrasdeArtista(artista['ConstituentID'], obras)
+        posNacionalidad = lt.isPresent(nacionalidades, artista['Nationality'])
+        nacionalidad = lt.getElement(nacionalidades, posNacionalidad)
+        for obra in obrasArtista:
+            lt.addLast(nacionalidad['Obras'], obra)
+            nacionalidad['CantidadObras'] += 1
+    return nacionalidades
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compareartworks(title1, artworks):
@@ -78,11 +98,5 @@ def compareartworks(title1, artworks):
     return -1
 
 # Funciones de ordenamiento
-def ordenarObrasPorNacionalidad(artistas, obras):
-    obrasNacionalidades = lt.newList()
-    for obra in obras:
-        for id in obra['ConstituentID']:
-            for artista in artistas:
-                if(artista['ConstituentID'] == id):
-                    obrasNacionalidades
+
 

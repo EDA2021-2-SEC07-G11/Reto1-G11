@@ -106,7 +106,10 @@ while True:
         pass
 
     elif int(inputs[0]) == 4:
-        pass
+        artistas = catalog['artists']
+        obras = catalog['artworks']
+        lista = controller.darObrasNacionalidad(artistas, obras)
+        print('El primer elemento de la lista es: '+ lt.getElement(lista, 1)['Nombre'])
 
     elif int(inputs[0]) == 5:
         pass

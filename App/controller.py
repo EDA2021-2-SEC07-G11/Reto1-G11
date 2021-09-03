@@ -70,3 +70,5 @@ def loadArtworks(catalog):
 
     
 # Funciones de consulta sobre el catálogo
+def darObrasNacionalidad(artistas, obras):
+    return model.darObrasNacionalidades(artistas, obras)
