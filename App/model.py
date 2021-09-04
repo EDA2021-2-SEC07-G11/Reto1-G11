@@ -73,6 +73,17 @@ def darObrasdeArtista(idArtista, catalog):
 
 # Funciones de consulta
 
+def darArtistasObra(obra, catalog):
+    artistas = catalog['artists']
+    lista = lt.newList()
+    artistasObra = obra['ConstituentID']
+    for n in range(1, lt.size(artistas)):
+        artista = lt.getElement(artistas, n)
+        if artista['ConstituentID'] in artistasObra:
+            lt.addFirst(lista, artista)
+    return lista
+
+
 def darListaNacionalidades(catalog):
     artistas = catalog["artists"]
     nacionalidades = lt.newList(key='Nombre')
@@ -110,6 +121,7 @@ def darObrasNacionalidades(catalog):
             obra = lt.getElement(obrasArtista, n)
             lt.addLast(nacionalidad['Obras'], obra)
             nacionalidad['NumeroObras'] += 1
+    nacionalidades = ordenarListaNacionalidades(nacionalidades)
     return nacionalidades
 
 
@@ -121,5 +133,21 @@ def compareartworks(title1, artworks):
 
 
 # Funciones de ordenamiento
+def ordenarListaNacionalidades(lista):
+    for n in range(1, lt.size(lista)):
+        elementoParaColocar = lt.getElement(lista, n)
+        posCambio = 0
+        for m in range(n, lt.size(lista)):
+            elementoActual = lt.getElement(lista, m)
+            if(elementoParaColocar['NumeroObras'] < elementoActual['NumeroObras']):
+                print('Se cambió')
+                posCambio = m
+                elementoParaColocar = elementoActual
+        if(posCambio > 0):
+            lt.deleteElement(lista, posCambio)
+            lt.insertElement(lista, elementoParaColocar, n)
+    print('Acabó de ordenar')
+    return lista
+
 
 

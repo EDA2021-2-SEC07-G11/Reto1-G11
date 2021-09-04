@@ -110,11 +110,34 @@ while True:
 
 
     elif int(inputs[0]) == 5:
+        print('Cargando Información...')
         lista = controller.darObrasNacionalidad(catalog)
         for n in range (1,lt.size(lista)):
             nacionalidad = lt.getElement(lista, n)
             print('Nacionalidad número '+ str(n)+': '+nacionalidad['Nombre']+'. Tiene '+str(nacionalidad['NumeroObras'])+' obras asociadas')
-
+        nacionalidad = lt.firstElement(lista)
+        print('La Nacionalidad con más obras es: '+nacionalidad['Nombre']+'. Las obras cuyo artista tiene esta nacionalidad son: ')
+        for n in range(1, lt.size(nacionalidad['Obras'])):
+            obra = lt.getElement(nacionalidad['Obras'], n)
+            artistasObra = controller.darArtistasObra(obra, catalog)
+            print('Tiene: '+str(lt.size(artistasObra))+' Artistas')
+            print('Obra número '+str(n)+': ')
+            print('Título: '+ obra['Title'])
+            artistas = ''
+            if(lt.size(artistasObra)>1):
+             for m in range (1, lt.size(artistasObra)):
+                    artistas = artistas + ' ' + str(lt.getElement(artistasObra, m)['DisplayName'])
+            else:
+                artistas = artistas + ' ' + str(lt.getElement(artistasObra, 1)['DisplayName'])
+            print('Artistas: '+artistas)
+            print('Fecha de la Obra: '+obra['Date'])
+            print('Medio: '+obra['Medium'])
+            if(obra['Dimensions'] != ''):
+                print('Dimensiones: '+ obra['Dimensions'])
+            elif (obra['Duration (sec.)'] != ''):
+                print('Duración: '+ obra['Duration (sec.)'])
+            else:
+                print('Dimensiones Desconocidas')
 
     elif int(inputs[0]) == 6:
         pass
