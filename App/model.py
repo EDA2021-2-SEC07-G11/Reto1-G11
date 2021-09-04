@@ -61,6 +61,8 @@ def addArtist(catalog, artist):
 
 
 # Funciones para creacion de datos
+
+
 def darObrasdeArtista(idArtista, catalog):
     obras = catalog['artworks']
     obrasArtista = lt.newList()
