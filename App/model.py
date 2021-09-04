@@ -25,6 +25,7 @@
  """
 
 
+from DISClib.DataStructures.arraylist import newList, size
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
@@ -60,9 +61,11 @@ def addArtist(catalog, artist):
 
 
 # Funciones para creacion de datos
-def darObrasdeArtista(idArtista, obras):
+def darObrasdeArtista(idArtista, catalog):
+    obras = catalog['artworks']
     obrasArtista = lt.newList()
-    for obra in obras:
+    for n in range (1, lt.size(obras)):
+        obra = lt.getElement(obras, n)
         artistasObra = obra['ConstituentID']
         if idArtista in artistasObra:
             lt.addLast(obrasArtista, obra)
@@ -70,24 +73,43 @@ def darObrasdeArtista(idArtista, obras):
 
 # Funciones de consulta
 
-def darListaNacionalidades(artistas):
-    nacionalidades = lt.newList()
-    for artista in artistas:
+def darListaNacionalidades(catalog):
+    artistas = catalog["artists"]
+    nacionalidades = lt.newList(key='Nombre')
+    numeroArtistas = lt.size(artistas)
+    for cont in range (1, numeroArtistas):
         obras = lt.newList()
-        if(artista['Nacionalidad'] not in nacionalidades['Nombre']):
-            elemento = {'Nombre': '', 'CantidadObras': 0, 'Obras': None}
-            lt.addLast(nacionalidades, {artista['Nacionalidad'],0, obras})
+        artista = lt.getElement(artistas, cont)
+        nacionalidadArtista = artista['Nationality']
+        numeroNacionalidades = lt.size(nacionalidades)
+        esta = False
+        if(numeroNacionalidades>0):
+            for cont in range (1,numeroNacionalidades):
+                elemento = lt.getElement(nacionalidades, cont)
+                if(elemento['Nombre']==nacionalidadArtista):
+                    esta = True
+        if (esta == False):
+            nuevaNacionalidad = {'Nombre':nacionalidadArtista, 'NumeroObras': 0 , 'Obras': obras}
+            lt.addLast(nacionalidades, nuevaNacionalidad)
     return nacionalidades
 
-def darObrasNacionalidades(artistas, obras):
-    nacionalidades = darListaNacionalidades(artistas)
-    for artista in artistas:
-        obrasArtista = darObrasdeArtista(artista['ConstituentID'], obras)
-        posNacionalidad = lt.isPresent(nacionalidades, artista['Nationality'])
+def darObrasNacionalidades(catalog):
+    artistas = catalog['artists']
+    obras = catalog['artworks']
+    nacionalidades = darListaNacionalidades(catalog)
+    for n in range (1, lt.size(artistas)):
+        artista = lt.getElement(artistas, n)
+        obrasArtista = darObrasdeArtista(artista['ConstituentID'], catalog)
+        posNacionalidad = 0
+        for n in range (1, lt.size(nacionalidades)):
+            nacionalidad = lt.getElement(nacionalidades, n)
+            if nacionalidad['Nombre'] == artista['Nationality']:
+                posNacionalidad = n
         nacionalidad = lt.getElement(nacionalidades, posNacionalidad)
-        for obra in obrasArtista:
+        for n in range(1,lt.size(obrasArtista)):
+            obra = lt.getElement(obrasArtista, n)
             lt.addLast(nacionalidad['Obras'], obra)
-            nacionalidad['CantidadObras'] += 1
+            nacionalidad['NumeroObras'] += 1
     return nacionalidades
 
 
@@ -96,6 +118,7 @@ def compareartworks(title1, artworks):
     if (title1.lower() in artworks['Title'].lower()):
         return 0
     return -1
+
 
 # Funciones de ordenamiento
 

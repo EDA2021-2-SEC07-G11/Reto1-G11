@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from typing_extensions import ParamSpecArgs
 import config as cf
 import sys
 import controller
@@ -106,13 +107,13 @@ while True:
         pass
 
     elif int(inputs[0]) == 4:
-        artistas = catalog["artists"]
-        obras = catalog["artworks"]
-        lista = controller.darObrasNacionalidad(artistas, obras)
-        print('El primer elemento de la lista es: '+ lt.getElement(lista, 1)['Nombre'])
+        ParamSpecArgs
+
 
     elif int(inputs[0]) == 5:
-        pass
+        lista = controller.darObrasNacionalidad(catalog)
+        print('El primer elemento de la lista es: '+ lt.getElement(lista, 1)['Nombre'])
+        print('TIENE '+ str(lt.getElement(lista, 1)['NumeroObras'])+ ' obras asociadas')
 
     elif int(inputs[0]) == 6:
         pass
