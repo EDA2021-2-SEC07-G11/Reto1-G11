@@ -95,7 +95,6 @@ def darListaNacionalidades(catalog):
 
 def darObrasNacionalidades(catalog):
     artistas = catalog['artists']
-    obras = catalog['artworks']
     nacionalidades = darListaNacionalidades(catalog)
     for n in range (1, lt.size(artistas)):
         artista = lt.getElement(artistas, n)
@@ -105,6 +104,7 @@ def darObrasNacionalidades(catalog):
             nacionalidad = lt.getElement(nacionalidades, n)
             if nacionalidad['Nombre'] == artista['Nationality']:
                 posNacionalidad = n
+                break
         nacionalidad = lt.getElement(nacionalidades, posNacionalidad)
         for n in range(1,lt.size(obrasArtista)):
             obra = lt.getElement(obrasArtista, n)
