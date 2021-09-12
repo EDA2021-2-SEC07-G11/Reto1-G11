@@ -30,13 +30,14 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
+import datetime
 
 """
 Se define la estructura de un catálogo
 """
 
 # Construccion de modelos
-def newCatalog():
+def newCatalog(tipo):
     """
     Inicializa el catálogo. Crea una lista vacia para guardar
     todos los artistas, adicionalmente, crea una lista vacia para las obras de arte,
@@ -45,8 +46,8 @@ def newCatalog():
     catalog = {'artists': None,
                'artworks': None}
 
-    catalog['artists'] = lt.newList()
-    catalog['artworks'] = lt.newList()
+    catalog['artists'] = lt.newList(tipo)
+    catalog['artworks'] = lt.newList(tipo)
 
     return catalog
 
@@ -63,16 +64,6 @@ def addArtist(catalog, artist):
 # Funciones para creacion de datos
 
 
-def darObrasdeArtista(idArtista, catalog):
-    obras = catalog['artworks']
-    obrasArtista = lt.newList()
-    for n in range (1, lt.size(obras)):
-        obra = lt.getElement(obras, n)
-        artistasObra = obra['ConstituentID']
-        if idArtista in artistasObra:
-            lt.addLast(obrasArtista, obra)
-    return obrasArtista
-
 # Funciones de consulta
 
 def darArtistasObra(obra, catalog):
@@ -86,70 +77,32 @@ def darArtistasObra(obra, catalog):
     return lista
 
 
-def darListaNacionalidades(catalog):
-    artistas = catalog["artists"]
-    nacionalidades = lt.newList(key='Nombre')
-    numeroArtistas = lt.size(artistas)
-    for cont in range (1, numeroArtistas):
-        obras = lt.newList()
-        artista = lt.getElement(artistas, cont)
-        nacionalidadArtista = artista['Nationality']
-        numeroNacionalidades = lt.size(nacionalidades)
-        esta = False
-        if(numeroNacionalidades>0):
-            for cont in range (1,numeroNacionalidades):
-                elemento = lt.getElement(nacionalidades, cont)
-                if(elemento['Nombre']==nacionalidadArtista):
-                    esta = True
-        if (esta == False):
-            nuevaNacionalidad = {'Nombre':nacionalidadArtista, 'NumeroObras': 0 , 'Obras': obras}
-            lt.addLast(nacionalidades, nuevaNacionalidad)
-    return nacionalidades
-
-def darObrasNacionalidades(catalog):
-    artistas = catalog['artists']
-    nacionalidades = darListaNacionalidades(catalog)
-    for n in range (1, lt.size(artistas)):
-        artista = lt.getElement(artistas, n)
-        obrasArtista = darObrasdeArtista(artista['ConstituentID'], catalog)
-        posNacionalidad = 0
-        for n in range (1, lt.size(nacionalidades)):
-            nacionalidad = lt.getElement(nacionalidades, n)
-            if nacionalidad['Nombre'] == artista['Nationality']:
-                posNacionalidad = n
-                break
-        nacionalidad = lt.getElement(nacionalidades, posNacionalidad)
-        for n in range(1,lt.size(obrasArtista)):
-            obra = lt.getElement(obrasArtista, n)
-            lt.addLast(nacionalidad['Obras'], obra)
-            nacionalidad['NumeroObras'] += 1
-    nacionalidades = ordenarListaNacionalidades(nacionalidades)
-    return nacionalidades
-
-
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compareartworks(title1, artworks):
     if (title1.lower() in artworks['Title'].lower()):
         return 0
     return -1
 
+def cmpArtworkByDateAcquired(artwork1, artwork2):
+    """
+    Devuelve verdadero (True) si el 'DateAcquired' de artwork1 es menores que el de artwork2
+    Args:
+    artwork1: informacion de la primera obra que incluye su valor 'DateAcquired'
+    artwork2: informacion de la segunda obra que incluye su valor 'DateAcquired'
+    """
+    obra1 = artwork1['DateAcquired'].split('-')
+    fecha1 = datetime.datetime(obra1[0],obra1[2],obra1[3])
+    obra2 = artwork2['DateAcquired'].split('-')
+    fecha2 = datetime.datetime(obra2[0],obra2[2],obra2[3])
+    if fecha1 < fecha2:
+        return True
+    else:
+        return False
 
+
+    
 # Funciones de ordenamiento
-def ordenarListaNacionalidades(lista):
-    for n in range(1, lt.size(lista)):
-        elementoParaColocar = lt.getElement(lista, n)
-        posCambio = 0
-        for m in range(n, lt.size(lista)):
-            elementoActual = lt.getElement(lista, m)
-            if(elementoParaColocar['NumeroObras'] < elementoActual['NumeroObras']):
-                print('Se cambió')
-                posCambio = m
-                elementoParaColocar = elementoActual
-        if(posCambio > 0):
-            lt.deleteElement(lista, posCambio)
-            lt.insertElement(lista, elementoParaColocar, n)
-    print('Acabó de ordenar')
-    return lista
+
 
 
 
