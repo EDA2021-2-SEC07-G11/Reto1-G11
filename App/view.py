@@ -151,31 +151,24 @@ while True:
                 print('Tamaño inválido')
             else:
                 ordenamiento = ''
+                respuesta = None
                 printMenuOrdenamientos()
                 opciones = input('Seleccione una opción para continuar\n')
                 if int(opciones[0]) == 1:
                     result = controller.ordenarObrasPorFecha('insertion', muestra, catalog)
-                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
-                    imprimir_primerostresworksFecha(result[1])
-                    imprimir_ultimostresworksFecha(result[1])
-
                 elif int(opciones[0]) == 2:
                     result = controller.ordenarObrasPorFecha('shell', muestra, catalog)
-                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
-                    imprimir_primerostresworksFecha(result[1])
-                    imprimir_ultimostresworksFecha(result[1])
                 elif int(opciones[0]) == 3:
                     result = controller.ordenarObrasPorFecha('merge', muestra, catalog)
-                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
-                    imprimir_primerostresworksFecha(result[1])
-                    imprimir_ultimostresworksFecha(result[1])
                 elif int(opciones[0]) == 4:
                     result = controller.ordenarObrasPorFecha('quick', muestra, catalog)
+                if result != None:
                     print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
                     imprimir_primerostresworksFecha(result[1])
                     imprimir_ultimostresworksFecha(result[1])
                 else:
-                    print('Seleccione una opción válida')
+                    print("Seleccione una opción válida")
+                
         else:
             print('Tamaño inválido')
 
