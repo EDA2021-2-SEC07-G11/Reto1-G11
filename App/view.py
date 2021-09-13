@@ -23,6 +23,7 @@
 import config as cf
 import sys
 import controller
+from tabulate import tabulate
 from DISClib.ADT import list as lt
 assert cf
 
@@ -77,8 +78,12 @@ def printartwork(artwork):
 def printartworkFecha(artwork):
     print('Titulo: ' + artwork['Title'] + '. Fecha de adquisición: '+ artwork['DateAcquired'] )
 
+def printarworkInfo(artwork):
+    print()
+
 def printartist(artist):
     print('Nombre: ' + artist['Artista']['DisplayName'] )
+
 
 def imprimir_ultimostresworks(lista):
     print("Estas son las ultimas tres obras: ")
@@ -139,8 +144,10 @@ while True:
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         lista=catalog["artists"]
         imprimir_ultimostresartist(lista)
+    
     elif int(inputs[0]) == 2:
         pass
+
     elif int(inputs[0]) == 3:
         lista = catalog['artworks']
         muestra = input('Seleccione el tamaño de la muestra\n')
@@ -167,25 +174,28 @@ while True:
                     imprimir_primerostresworksFecha(result[1])
                     imprimir_ultimostresworksFecha(result[1])
                 else:
-                    print("Seleccione una opción válida")
-                
+                    print("Seleccione una opción válida")   
         else:
             print('Tamaño inválido')
 
     elif int(inputs[0]) == 4:
         pass
 
-
     elif int(inputs[0]) == 5:
         print('Clasificando los países por el número de obras asociadas...')
         lista = controller.darListaNacionalidadesOrdenada(catalog)
         contador = 0
         print('El TOP 10 de países en el MOMA son:')
+        datos =[]
         for i in lt.iterator(lista):
             contador += 1
-            print('Nacionalidad número '+str(contador)+': '+i['Nombre']+ ' tiene '+str(i['Cantidad'])+ ' obras asociadas')
+            datos.append([i['Nombre'],i['Cantidad']])
             if(contador == 10):
                 break
+        print(tabulate(datos, headers=['Nationality', 'Artworks'], tablefmt='fancy_grid'))
+        primeraNacionalidad = lt.firstElement(lista)
+        obrasPrimeraNacionalidad = primeraNacionalidad['Obras']
+
 
     elif int(inputs[0]) == 6:
         pass
