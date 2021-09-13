@@ -50,6 +50,13 @@ def printMenuTipos():
     print("1- ARRAY_LIST")
     print("2- LINKED_LIST")
 
+def printMenuOrdenamientos():
+    print("Seleccione el tipo de ordenamiento")
+    print("1- Insertion Sort")
+    print("2- Shell Sort")
+    print("3- Merge Sort")
+    print("4- Quick Sort")
+
 catalog = None
 
 def initCatalog(tipo):
@@ -67,11 +74,14 @@ def loadData(catalog):
 def printartwork(artwork):
     print('Titulo: ' + artwork['Title'] )
 
+def printartworkFecha(artwork):
+    print('Titulo: ' + artwork['Title'] + '. Fecha de adquisición: '+ artwork['DateAcquired'] )
+
 def printartist(artist):
     print('Nombre: ' + artist['DisplayName'] )
 
 def imprimir_ultimostresworks(lista):
-    print("Estos son las ultimas tres obras: ")
+    print("Estas son las ultimas tres obras: ")
     contador=0
     puesto=lt.size(lista)
     while contador<3:
@@ -79,8 +89,26 @@ def imprimir_ultimostresworks(lista):
         puesto+=-1
         contador+=1
 
+def imprimir_ultimostresworksFecha(lista):
+    print("Estas son las últimas tres obras: ")
+    contador=0
+    puesto=lt.size(lista) - 2
+    while contador<3:
+        printartworkFecha(lt.getElement(lista,puesto))
+        puesto+=1
+        contador+=1
+
+def imprimir_primerostresworksFecha(lista):
+    print("Estas son las primeras tres obras: ")
+    contador=0
+    puesto=1
+    while contador<3:
+        printartworkFecha(lt.getElement(lista,puesto))
+        puesto+=1
+        contador+=1
+
 def imprimir_ultimostresartist(lista):
-    print("Estos son los ultimos tres artistas: ")
+    print("Estas son los ultimos tres artistas: ")
     contador=0
     puesto=lt.size(lista)
     while contador<3:
@@ -108,14 +136,42 @@ while True:
         print('Obras Cargadas: ' + str(lt.size(catalog['artworks'])))
         lista=catalog["artworks"]
         imprimir_ultimostresworks(lista)
-        print('Autores cargados: ' + str(lt.size(catalog['artists'])))
+        print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         lista=catalog["artists"]
         imprimir_ultimostresartist(lista)
     elif int(inputs[0]) == 2:
         pass
-
     elif int(inputs[0]) == 3:
-        pass
+        lista = catalog['artworks']
+        muestra = input('Seleccione el tamaño de la muestra\n')
+        if(muestra.isnumeric()):
+            muestra = int(muestra)
+            total = lt.size(lista)
+            if(muestra > total or muestra <= 0):
+                print('Tamaño inválido')
+            else:
+                ordenamiento = ''
+                printMenuOrdenamientos()
+                opciones = input('Seleccione una opción para continuar\n')
+                if int(opciones[0]) == 1:
+                    result = controller.ordenarObrasPorFecha('insertion', muestra, catalog)
+                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                    imprimir_primerostresworksFecha(result[1])
+                    imprimir_ultimostresworksFecha(result[1])
+
+                elif int(opciones[0]) == 2:
+                    result = controller.ordenarObrasPorFecha('shell', muestra, catalog)
+                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                elif int(opciones[0]) == 3:
+                    result = controller.ordenarObrasPorFecha('merge', muestra, catalog)
+                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                elif int(opciones[0]) == 4:
+                    result = controller.ordenarObrasPorFecha('quick', muestra, catalog)
+                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                else:
+                    print('Seleccione una opción válida')
+        else:
+            print('Tamaño inválido')
 
     elif int(inputs[0]) == 4:
         pass

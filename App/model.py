@@ -28,9 +28,12 @@
 from DISClib.DataStructures.arraylist import newList, size
 import config as cf
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import shellsort as shell
+from DISClib.Algorithms.Sorting import insertionsort as insertion
+from DISClib.Algorithms.Sorting import mergesort as merge
+from DISClib.Algorithms.Sorting import quicksort as quick
 assert cf
-import datetime
+import time
 
 """
 Se define la estructura de un catálogo
@@ -77,6 +80,9 @@ def darArtistasObra(obra, catalog):
     return lista
 
 
+
+
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compareartworks(title1, artworks):
     if (title1.lower() in artworks['Title'].lower()):
@@ -90,11 +96,9 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     artwork1: informacion de la primera obra que incluye su valor 'DateAcquired'
     artwork2: informacion de la segunda obra que incluye su valor 'DateAcquired'
     """
-    obra1 = artwork1['DateAcquired'].split('-')
-    fecha1 = datetime.datetime(obra1[0],obra1[2],obra1[3])
-    obra2 = artwork2['DateAcquired'].split('-')
-    fecha2 = datetime.datetime(obra2[0],obra2[2],obra2[3])
-    if fecha1 < fecha2:
+    obra1 = artwork1['DateAcquired']
+    obra2 = artwork2['DateAcquired']
+    if obra1 < obra2:
         return True
     else:
         return False
@@ -103,6 +107,23 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     
 # Funciones de ordenamiento
 
-
+def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
+    obras = catalog['artworks'] 
+    lista = lt.subList(obras, 0, tamano)
+    lista = lista.copy()
+    start_time = time.process_time()
+    if(ordenamiento == 'insertion'):
+        listaOrdenada = insertion.sort(lista, cmpArtworkByDateAcquired)
+    elif (ordenamiento == 'shell'):
+        listaOrdenada = shell.sort(lista, cmpArtworkByDateAcquired)
+    elif (ordenamiento == 'quick'):
+        listaOrdenada = quick.sort(lista, cmpArtworkByDateAcquired)
+    elif (ordenamiento == 'merge'):
+        listaOrdenada = merge.sort(lista, cmpArtworkByDateAcquired)
+    else:
+        return None
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, listaOrdenada
 
 
