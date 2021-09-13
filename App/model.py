@@ -25,7 +25,7 @@
  """
 
 
-from DISClib.DataStructures.arraylist import newList, size
+from DISClib.DataStructures.arraylist import iterator, newList, size
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as shell
@@ -57,27 +57,56 @@ def newCatalog(tipo):
 # Funciones para agregar informacion al catalogo
 def addArtwork(catalog, artwork):
     lt.addLast(catalog["artworks"],artwork)
-    # Se adiciona el libro a la lista de libros
+    artistas = artwork['ConstituentID'].replace(']', '').replace('[', '').split(',')
+    for i in lt.iterator(catalog['artists']):
+        artista = i['Artista']
+        if artista['ConstituentID'] in artistas:
+            lt.addLast(i['Obras'], artwork)
 
 def addArtist(catalog, artist):
     # Se adiciona el libro a la lista de libros
-    lt.addLast(catalog["artists"],artist)
-
+    obras = lt.newList()
+    lt.addLast(catalog["artists"],{'Artista': artist, 'Obras': obras})
 
 # Funciones para creacion de datos
+def crearListaNacionalidades(catalog):
+    lista = catalog['artists']
+    nacionalidades = lt.newList()
+    soporte = lt.newList()
+    for i in lt.iterator(lista):
+        obras = i['Obras']
+        artista = i['Artista']
+        nacionalidad = artista['Nationality']
+        if not(lt.isPresent(soporte, nacionalidad)):
+            lt.addLast(soporte, nacionalidad)
+            lt.addLast(nacionalidades, {'Nombre': nacionalidad, 'Obras':obras, 'Cantidad': lt.size(obras)})
+        else:
+            for j in lt.iterator(nacionalidades):
+                if(j['Nombre'] == nacionalidad):
+                    j['Cantidad'] += agregarObras(j['Obras'], obras)
+        
+                
+    return nacionalidades
+    
+def agregarObras(lista, obras):
+    nuevas = 0
+    for i in lt.iterator(obras):
+        esta = False
+        for j in lt.iterator(lista):
+            if i['Title'] == j['Title']:
+                esta = True
+            if esta == True:
+                break
+        if( esta == False):
+            lt.addLast(lista, i)
+            nuevas += 1
+    return nuevas
+
+
 
 
 # Funciones de consulta
 
-def darArtistasObra(obra, catalog):
-    artistas = catalog['artists']
-    lista = lt.newList()
-    artistasObra = obra['ConstituentID']
-    for n in range(1, lt.size(artistas)):
-        artista = lt.getElement(artistas, n)
-        if artista['ConstituentID'] in artistasObra:
-            lt.addFirst(lista, artista)
-    return lista
 
 
 
@@ -103,7 +132,13 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     else:
         return False
 
-
+def compararNacionalidades(nt1, nt2):
+    cantidad1 = nt1['Cantidad']
+    cantidad2 = nt2['Cantidad']
+    if(cantidad1 > cantidad2):
+        return True
+    else:
+        return False
     
 # Funciones de ordenamiento
 
@@ -126,4 +161,6 @@ def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, listaOrdenada
 
-
+def ordenarListaNacionalidades(catalog):
+    nacionalidades = crearListaNacionalidades(catalog)
+    return merge.sort(nacionalidades, compararNacionalidades)

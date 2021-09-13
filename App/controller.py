@@ -45,8 +45,8 @@ def loadData(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
-    loadArtworks(catalog)
     loadArtists(catalog)
+    loadArtworks(catalog)
 
 def loadArtists(catalog):
     """
@@ -71,3 +71,6 @@ def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
     return model.ordenarObrasPorFecha(ordenamiento, tamano, catalog)
     
 # Funciones de consulta sobre el catálogo
+
+def darListaNacionalidadesOrdenada(catalog):
+    return model.ordenarListaNacionalidades(catalog)

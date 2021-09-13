@@ -78,7 +78,7 @@ def printartworkFecha(artwork):
     print('Titulo: ' + artwork['Title'] + '. Fecha de adquisición: '+ artwork['DateAcquired'] )
 
 def printartist(artist):
-    print('Nombre: ' + artist['DisplayName'] )
+    print('Nombre: ' + artist['Artista']['DisplayName'] )
 
 def imprimir_ultimostresworks(lista):
     print("Estas son las ultimas tres obras: ")
@@ -184,7 +184,13 @@ while True:
 
 
     elif int(inputs[0]) == 5:
-        pass
+        lista = controller.darListaNacionalidadesOrdenada(catalog)
+        contador = 0
+        for i in lt.iterator(lista):
+            contador += 1
+            print('Nacionalidad número '+str(contador)+': '+i['Nombre']+ ' tiene '+str(i['Cantidad'])+ ' obras asociadas')
+            if(contador == 10):
+                break
 
     elif int(inputs[0]) == 6:
         pass
