@@ -184,8 +184,10 @@ while True:
 
 
     elif int(inputs[0]) == 5:
+        print('Clasificando los países por el número de obras asociadas...')
         lista = controller.darListaNacionalidadesOrdenada(catalog)
         contador = 0
+        print('El TOP 10 de países en el MOMA son:')
         for i in lt.iterator(lista):
             contador += 1
             print('Nacionalidad número '+str(contador)+': '+i['Nombre']+ ' tiene '+str(i['Cantidad'])+ ' obras asociadas')
