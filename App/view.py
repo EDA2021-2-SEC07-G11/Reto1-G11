@@ -162,12 +162,18 @@ while True:
                 elif int(opciones[0]) == 2:
                     result = controller.ordenarObrasPorFecha('shell', muestra, catalog)
                     print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                    imprimir_primerostresworksFecha(result[1])
+                    imprimir_ultimostresworksFecha(result[1])
                 elif int(opciones[0]) == 3:
                     result = controller.ordenarObrasPorFecha('merge', muestra, catalog)
                     print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                    imprimir_primerostresworksFecha(result[1])
+                    imprimir_ultimostresworksFecha(result[1])
                 elif int(opciones[0]) == 4:
                     result = controller.ordenarObrasPorFecha('quick', muestra, catalog)
                     print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
+                    imprimir_primerostresworksFecha(result[1])
+                    imprimir_ultimostresworksFecha(result[1])
                 else:
                     print('Seleccione una opción válida')
         else:
