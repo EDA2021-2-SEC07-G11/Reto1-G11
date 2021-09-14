@@ -73,16 +73,35 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 def printartwork(artwork):
-    print('Titulo: ' + artwork['Title'] )
+    print('Titulo: ' + artwork['Obra']['Title'] )
 
 def printartworkFecha(artwork):
-    print('Titulo: ' + artwork['Title'] + '. Fecha de adquisición: '+ artwork['DateAcquired'] )
+    print('Titulo: ' + artwork['Obra']['Title'] + '. Fecha de adquisición: '+ artwork['Obra']['DateAcquired'] )
 
 def printarworkInfo(artwork):
     print()
 
 def printartist(artist):
     print('Nombre: ' + artist['Artista']['DisplayName'] )
+
+def darInfoObra(artwork):
+    iD = artwork['ConstituentID']
+    nombre = artwork['Title']
+   # artistas = artwork['Artistas']
+    medio = artwork['Medium']
+    fecha = artwork['Date']
+    artistas = 'HOLAAA'
+    if (artwork['Dimensions'] != ''):
+        dimensiones = artwork['Dimensions']
+    else:
+        dimensiones = 'Unknown'
+    departamento = artwork['Department']
+    clasificacion = artwork['Classification']
+    if(artwork['URL'] != ''):
+        Url = artwork['Dimensions']
+    else:
+        Url = 'Unknown'
+    return iD,nombre,artistas,medio,fecha,dimensiones,departamento,clasificacion,Url
 
 
 def imprimir_ultimostresworks(lista):
@@ -195,6 +214,21 @@ while True:
         print(tabulate(datos, headers=['Nationality', 'Artworks'], tablefmt='fancy_grid'))
         primeraNacionalidad = lt.firstElement(lista)
         obrasPrimeraNacionalidad = primeraNacionalidad['Obras']
+        obras = []
+        contador = 0
+        puesto = 1
+        while contador<3:
+            obras.append(darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto)))
+            puesto+=1
+            contador+=1
+        contador = 0
+        puesto = lt.size(obrasPrimeraNacionalidad)-2
+        while contador<3:
+            obras.append(darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto)))
+            puesto+=1
+            contador+=1
+        print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Department','Classification','URL'], tablefmt='fancy_grid'))
+
 
 
     elif int(inputs[0]) == 6:

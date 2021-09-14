@@ -56,12 +56,14 @@ def newCatalog(tipo):
 
 # Funciones para agregar informacion al catalogo
 def addArtwork(catalog, artwork):
-    lt.addLast(catalog["artworks"],artwork)
-    artistas = artwork['ConstituentID'].replace(']', '').replace('[', '').split(',')
+    artistasObra = lt.newList()
+    artistasId = artwork['ConstituentID'].replace(']', '').replace('[', '').split(',')
     for i in lt.iterator(catalog['artists']):
         artista = i['Artista']
-        if artista['ConstituentID'] in artistas:
+        if artista['ConstituentID'] in artistasId:
             lt.addLast(i['Obras'], artwork)
+            lt.addLast(artistasObra, artista['DisplayName'])
+    lt.addLast(catalog["artworks"],{'Obra': artwork, 'Artistas': artistasObra})
 
 def addArtist(catalog, artist):
     # Se adiciona el libro a la lista de libros
@@ -143,9 +145,11 @@ def compararNacionalidades(nt1, nt2):
 # Funciones de ordenamiento
 
 def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
-    obras = catalog['artworks'] 
-    lista = lt.subList(obras, 0, tamano)
-    lista = lista.copy()
+    obras = catalog['artworks']
+    soporte = lt.newList()
+    for i in lt.iterator(obras):
+        lt.addLast(soporte, i['Obra'])
+    lista = lt.subList(soporte, 0, tamano)
     start_time = time.process_time()
     if(ordenamiento == 'insertion'):
         listaOrdenada = insertion.sort(lista, cmpArtworkByDateAcquired)
