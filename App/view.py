@@ -90,7 +90,10 @@ def darInfoObra(artwork):
     if len(nombre) > 23:
         contador = 23
         while contador < len(nombre):
-            nombre = nombre[:contador]+'\n'+nombre[contador:]
+            if(nombre[contador-2] == ' '):
+                nombre = nombre[:contador-1]+'\n'+nombre[contador-1:]
+            else: 
+                nombre = nombre[:contador]+'\n'+nombre[contador:]
             contador+=23
         
    # artistas = artwork['Artistas']
@@ -98,7 +101,10 @@ def darInfoObra(artwork):
     if len(medio) > 23:
         contador = 23
         while contador < len(medio):
-            medio = medio[:contador]+'\n'+medio[contador:]
+            if (medio[contador-2]==' '):
+                medio = medio[:contador-1]+'\n'+medio[contador-1:]
+            else:
+                medio = medio[:contador]+'\n'+medio[contador:]
             contador+=23
     fecha = artwork['Date']
     artistas = 'HOLAAA'
@@ -107,7 +113,10 @@ def darInfoObra(artwork):
         if len(dimensiones) > 23:
             contador = 23
             while contador < len(dimensiones):
-                dimensiones = dimensiones[:contador]+'\n'+dimensiones[contador:]
+                if(dimensiones[contador-2]==' '):
+                    dimensiones = dimensiones[:contador-1]+'\n'+dimensiones[contador-1:]
+                else:
+                    dimensiones = dimensiones[:contador]+'\n'+dimensiones[contador:]
                 contador+=23
     else:
         dimensiones = 'Unknown'
