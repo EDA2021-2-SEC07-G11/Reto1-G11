@@ -48,7 +48,6 @@ def newCatalog(tipo):
     """
     catalog = {'artists': None,
                'artworks': None}
-
     catalog['artists'] = lt.newList(tipo)
     catalog['artworks'] = lt.newList(tipo)
 

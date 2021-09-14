@@ -189,8 +189,8 @@ while True:
         opciones = input('Seleccione una opción para continuar\n')
         if int(opciones[0]) == 1:
             tipo = 'ARRAY_LIST'
-        elif int(opciones[0] == 2):
-            tipo = 'LINKED_LIST'
+        elif int(opciones[0]) == 2:
+            tipo = 'SINGLE_LINKED'
         print("Cargando información de los archivos ....")
         catalog = initCatalog(tipo)
         loadData(catalog)
