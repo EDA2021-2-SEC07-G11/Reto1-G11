@@ -108,6 +108,17 @@ def agregarObras(lista, obras):
 
 
 # Funciones de consulta
+def darArtistasObraNacionalidad(idartwork, catalog):
+    artwork = None
+    for i in lt.iterator(catalog['artworks']):
+        if(i['Obra']['ObjectID'] == idartwork) :
+            artwork = i
+            break
+    respuesta = ''
+    if(artwork != None):
+     for i in lt.iterator(artwork['Artistas']):
+            respuesta += i+'. '
+    return respuesta
 
 
 

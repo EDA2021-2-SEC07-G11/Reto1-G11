@@ -74,3 +74,6 @@ def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
 
 def darListaNacionalidadesOrdenada(catalog):
     return model.ordenarListaNacionalidades(catalog)
+
+def darArtistasObra(artwork, catalog):
+    return model.darArtistasObraNacionalidad(artwork, catalog)

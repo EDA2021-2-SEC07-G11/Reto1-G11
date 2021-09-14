@@ -87,37 +87,44 @@ def printartist(artist):
 def darInfoObra(artwork):
     iD = artwork['ObjectID']
     nombre = artwork['Title']
-    if len(nombre) > 23:
-        contador = 23
+    if len(nombre) > 20:
+        contador = 20
         while contador < len(nombre):
             if(nombre[contador-2] == ' '):
                 nombre = nombre[:contador-1]+'\n'+nombre[contador-1:]
             else: 
                 nombre = nombre[:contador]+'\n'+nombre[contador:]
-            contador+=23
-        
-   # artistas = artwork['Artistas']
+            contador+=20
+    artistas = controller.darArtistasObra(iD, catalog)
+    if len(artistas) > 21:
+        contador = 21
+        while contador < len(artistas):
+            if(artistas[contador-2] == ' '):
+                artistas = artistas[:contador-1]+'\n'+artistas[contador-1:]
+            else: 
+                artistas = artistas[:contador]+'\n'+artistas[contador:]
+            contador+=21
+   
     medio = artwork['Medium']
-    if len(medio) > 23:
-        contador = 23
+    if len(medio) > 20:
+        contador = 20
         while contador < len(medio):
             if (medio[contador-2]==' '):
                 medio = medio[:contador-1]+'\n'+medio[contador-1:]
             else:
                 medio = medio[:contador]+'\n'+medio[contador:]
-            contador+=23
+            contador+=20
     fecha = artwork['Date']
-    artistas = 'HOLAAA'
     if (artwork['Dimensions'] != ''):
         dimensiones = artwork['Dimensions']
-        if len(dimensiones) > 23:
-            contador = 23
+        if len(dimensiones) > 22:
+            contador = 22
             while contador < len(dimensiones):
                 if(dimensiones[contador-2]==' '):
                     dimensiones = dimensiones[:contador-1]+'\n'+dimensiones[contador-1:]
                 else:
                     dimensiones = dimensiones[:contador]+'\n'+dimensiones[contador:]
-                contador+=23
+                contador+=22
     else:
         dimensiones = 'Unknown'
     departamento = artwork['Department']
