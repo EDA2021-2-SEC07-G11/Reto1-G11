@@ -76,7 +76,7 @@ def printartwork(artwork):
     print('Titulo: ' + artwork['Obra']['Title'] )
 
 def printartworkFecha(artwork):
-    print('Titulo: ' + artwork['Obra']['Title'] + '. Fecha de adquisición: '+ artwork['Obra']['DateAcquired'] )
+    print('Titulo: ' + artwork['Title'] + '. Fecha de adquisición: '+ artwork['DateAcquired'] )
 
 def printarworkInfo(artwork):
     print()
