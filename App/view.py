@@ -85,20 +85,41 @@ def printartist(artist):
     print('Nombre: ' + artist['Artista']['DisplayName'] )
 
 def darInfoObra(artwork):
-    iD = artwork['ConstituentID']
+    iD = artwork['ObjectID']
     nombre = artwork['Title']
+    if len(nombre) > 23:
+        contador = 23
+        while contador < len(nombre):
+            nombre = nombre[:contador]+'\n'+nombre[contador:]
+            contador+=23
+        
    # artistas = artwork['Artistas']
     medio = artwork['Medium']
+    if len(medio) > 23:
+        contador = 23
+        while contador < len(medio):
+            medio = medio[:contador]+'\n'+medio[contador:]
+            contador+=23
     fecha = artwork['Date']
     artistas = 'HOLAAA'
     if (artwork['Dimensions'] != ''):
         dimensiones = artwork['Dimensions']
+        if len(dimensiones) > 23:
+            contador = 23
+            while contador < len(dimensiones):
+                dimensiones = dimensiones[:contador]+'\n'+dimensiones[contador:]
+                contador+=23
     else:
         dimensiones = 'Unknown'
     departamento = artwork['Department']
     clasificacion = artwork['Classification']
     if(artwork['URL'] != ''):
-        Url = artwork['Dimensions']
+        Url = artwork['URL']
+        if len(Url) >18:
+            contador = 18
+            while contador < len(Url):
+                Url = Url[:contador]+'\n'+Url[contador:]
+                contador+=18
     else:
         Url = 'Unknown'
     return iD,nombre,artistas,medio,fecha,dimensiones,departamento,clasificacion,Url
@@ -227,6 +248,8 @@ while True:
             obras.append(darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto)))
             puesto+=1
             contador+=1
+        print('La nacionalidad con mayor cantidad de obras en el museo es '+primeraNacionalidad['Nombre']+', que tiene '+str(primeraNacionalidad['Cantidad'])+' obras asociadas')
+        print('Las primeras y últimas tres obras de la nacionalidad '+primeraNacionalidad['Nombre']+' son:')
         print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Department','Classification','URL'], tablefmt='fancy_grid'))
 
 
