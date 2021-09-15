@@ -26,6 +26,8 @@ import controller
 from tabulate import tabulate
 from DISClib.ADT import list as lt
 assert cf
+default_limit = 1000
+sys.setrecursionlimit(default_limit*10)
 
 
 """
@@ -49,7 +51,7 @@ def printMenu():
 def printMenuTipos():
     print("Seleccione el tipo de lista")
     print("1- ARRAY_LIST")
-    print("2- LINKED_LIST")
+    print("2- SINGLE_LINKED")
 
 def printMenuOrdenamientos():
     print("Seleccione el tipo de ordenamiento")
@@ -76,7 +78,7 @@ def printartwork(artwork):
     print('Titulo: ' + artwork['Obra']['Title'] )
 
 def printartworkFecha(artwork):
-    print('Titulo: ' + artwork['Title'] + '. Fecha de adquisición: '+ artwork['DateAcquired'] )
+    print('Titulo: ' + artwork['Obra']['Title'] + '. Fecha de adquisición: '+ artwork['Obra']['DateAcquired'] )
 
 def printarworkInfo(artwork):
     print()

@@ -48,9 +48,15 @@ def newCatalog(tipo):
     """
     catalog = {'artists': None,
                'artworks': None}
-    catalog['artists'] = lt.newList(tipo)
-    catalog['artworks'] = lt.newList(tipo)
-
+    if(tipo == 'ARRAY_LIST'):
+        catalog['artists'] = lt.newList('ARRAY_LIST')
+        catalog['artworks'] = lt.newList('ARRAY_LIST')
+    elif(tipo == 'SINGLE_LINKED'):
+        catalog['artists'] = lt.newList('SINGLE_LINKED')
+        catalog['artworks'] = lt.newList('SINGLE_LINKED')
+    else:
+        catalog['artists'] = lt.newList()
+        catalog['artworks'] = lt.newList()
     return catalog
 
 # Funciones para agregar informacion al catalogo
@@ -137,8 +143,8 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     artwork1: informacion de la primera obra que incluye su valor 'DateAcquired'
     artwork2: informacion de la segunda obra que incluye su valor 'DateAcquired'
     """
-    obra1 = artwork1['DateAcquired']
-    obra2 = artwork2['DateAcquired']
+    obra1 = artwork1['Obra']['DateAcquired']
+    obra2 = artwork2['Obra']['DateAcquired']
     if obra1 < obra2:
         return True
     else:
@@ -156,10 +162,8 @@ def compararNacionalidades(nt1, nt2):
 
 def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
     obras = catalog['artworks']
-    soporte = lt.newList()
-    for i in lt.iterator(obras):
-        lt.addLast(soporte, i['Obra'])
-    lista = lt.subList(soporte, 0, tamano)
+    lista = lt.subList(obras, 0, tamano)
+    lista = lista.copy()
     start_time = time.process_time()
     if(ordenamiento == 'insertion'):
         listaOrdenada = insertion.sort(lista, cmpArtworkByDateAcquired)
