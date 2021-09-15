@@ -23,7 +23,6 @@
 import config as cf
 import sys
 import controller
-from tabulate import tabulate
 from DISClib.ADT import list as lt
 assert cf
 
