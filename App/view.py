@@ -267,7 +267,7 @@ while True:
             puesto+=1
             contador+=1
         print('La nacionalidad con mayor cantidad de obras en el museo es '+primeraNacionalidad['Nombre']+', que tiene '+str(primeraNacionalidad['Cantidad'])+' obras asociadas')
-        print('Las primeras y últimas tres obras de la nacionalidad '+primeraNacionalidad['Nombre']+' son:')
+        print('La primera y las últimas tres obras de la nacionalidad '+primeraNacionalidad['Nombre']+' son:')
         print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Department','Classification','URL'], tablefmt='fancy_grid'))
 
 
