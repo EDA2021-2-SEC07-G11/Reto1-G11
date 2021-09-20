@@ -62,7 +62,11 @@ def newCatalog(tipo):
 # Funciones para agregar informacion al catalogo
 def addArtwork(catalog, artwork):
     artistasObra = lt.newList()
-    artistasId = artwork['ConstituentID'].replace(']', '').replace('[', '').split(',')
+    artistasId = artwork['ConstituentID'].replace('[','').replace(']','').split(',')
+    n = 0
+    while n < len(artistasId):
+        artistasId[n] = artistasId[n].lstrip()
+        n += 1
     for i in lt.iterator(catalog['artists']):
         artista = i['Artista']
         if artista['ConstituentID'] in artistasId:
@@ -91,6 +95,10 @@ def crearListaNacionalidades(catalog):
             for j in lt.iterator(nacionalidades):
                 if(j['Nombre'] == nacionalidad):
                     j['Cantidad'] += agregarObras(j['Obras'], obras)
+    total = 0
+    for i in lt.iterator(nacionalidades):
+        total += i['Cantidad']
+    print('El total de obras de nacoinalidades es'+ str(total))
         
                 
     return nacionalidades
@@ -100,9 +108,8 @@ def agregarObras(lista, obras):
     for i in lt.iterator(obras):
         esta = False
         for j in lt.iterator(lista):
-            if i['Title'] == j['Title']:
+            if i['ObjectID'] == j['ObjectID']:
                 esta = True
-            if esta == True:
                 break
         if( esta == False):
             lt.addLast(lista, i)
@@ -124,6 +131,88 @@ def darArtistasObraNacionalidad(idartwork, catalog):
      for i in lt.iterator(artwork['Artistas']):
             respuesta += i+'. '
     return respuesta
+
+def darObrasEnRangoFecha(catalog, inicial, final):
+    obras = catalog['artworks']
+    lista = lt.newList()
+    for i in lt.iterator(obras):
+        fecha = i['Obra']['DateAcquired']
+        if(fecha >= inicial and fecha <= final):
+            lt.addLast(lista, i)
+    return lista
+
+def darObrasCompradas(lista):
+    total = 0
+    for i in lt.iterator(lista):
+        metodo = i['Obra']['CreditLine']
+        if 'purchase' in metodo.lower():
+            total += 1
+    return total
+
+def darCantidadArtistas(obras):
+    total = 0
+    artistas = lt.newList()
+    for i in lt.iterator(obras):
+        artistasObra = i['Artistas']
+        for artista in lt.iterator(artistasObra):
+            if not(lt.isPresent(artistas, artista)):
+                lt.addLast(artistas, artista)
+    return lt.size(artistas)
+
+def darInfoObra(artwork, catalog):
+    iD = artwork['ObjectID']
+    nombre = artwork['Title']
+    if len(nombre) > 20:
+        contador = 20
+        while contador < len(nombre):
+            if(nombre[contador-2] == ' '):
+                nombre = nombre[:contador-1]+'\n'+nombre[contador-1:]
+            else: 
+                nombre = nombre[:contador]+'\n'+nombre[contador:]
+            contador+=20
+    artistas =''
+    artistasLista = darArtistasObraNacionalidad(iD, catalog).split('.')
+
+    for i in artistasLista:
+        artistas += i+'\n'
+   
+    medio = artwork['Medium']
+    if len(medio) > 20:
+        contador = 20
+        while contador < len(medio):
+            if (medio[contador-2]==' '):
+                medio = medio[:contador-1]+'\n'+medio[contador-1:]
+            else:
+                medio = medio[:contador]+'\n'+medio[contador:]
+            contador+=20
+    fecha = artwork['Date']
+    if (artwork['Dimensions'] != ''):
+        dimensiones = artwork['Dimensions']
+        if len(dimensiones) > 22:
+            contador = 22
+            while contador < len(dimensiones):
+                if(dimensiones[contador-2]==' '):
+                    dimensiones = dimensiones[:contador-1]+'\n'+dimensiones[contador-1:]
+                else:
+                    dimensiones = dimensiones[:contador]+'\n'+dimensiones[contador:]
+                contador+=22
+    else:
+        dimensiones = 'Unknown'
+    departamento = artwork['Department']
+    clasificacion = artwork['Classification']
+    if(artwork['URL'] != ''):
+        Url = artwork['URL']
+        if len(Url) >17:
+            contador = 17
+            while contador < len(Url):
+                Url = Url[:contador]+'\n'+Url[contador:]
+                contador+=17
+    else:
+        Url = 'Unknown'
+
+    fechaCompra = artwork['DateAcquired']
+    return iD,nombre,artistas,medio,fecha,dimensiones,departamento,clasificacion,Url, fechaCompra
+
 
 
 
@@ -160,24 +249,13 @@ def compararNacionalidades(nt1, nt2):
     
 # Funciones de ordenamiento
 
-def ordenarObrasPorFecha(ordenamiento, tamano, catalog):
-    obras = catalog['artworks']
-    lista = lt.subList(obras, 0, tamano)
-    lista = lista.copy()
+def ordenarObrasPorFecha(inicial, final, catalog):
+    lista = darObrasEnRangoFecha(catalog, inicial, final)
     start_time = time.process_time()
-    if(ordenamiento == 'insertion'):
-        listaOrdenada = insertion.sort(lista, cmpArtworkByDateAcquired)
-    elif (ordenamiento == 'shell'):
-        listaOrdenada = shell.sort(lista, cmpArtworkByDateAcquired)
-    elif (ordenamiento == 'quick'):
-        listaOrdenada = quick.sort(lista, cmpArtworkByDateAcquired)
-    elif (ordenamiento == 'merge'):
-        listaOrdenada = merge.sort(lista, cmpArtworkByDateAcquired)
-    else:
-        return None
+    lista= merge.sort(lista, cmpArtworkByDateAcquired)
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, listaOrdenada
+    return elapsed_time_mseg, lista
 
 def ordenarListaNacionalidades(catalog):
     nacionalidades = crearListaNacionalidades(catalog)

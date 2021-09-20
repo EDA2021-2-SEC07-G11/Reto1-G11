@@ -86,62 +86,6 @@ def printarworkInfo(artwork):
 def printartist(artist):
     print('Nombre: ' + artist['Artista']['DisplayName'] )
 
-def darInfoObra(artwork):
-    iD = artwork['ObjectID']
-    nombre = artwork['Title']
-    if len(nombre) > 20:
-        contador = 20
-        while contador < len(nombre):
-            if(nombre[contador-2] == ' '):
-                nombre = nombre[:contador-1]+'\n'+nombre[contador-1:]
-            else: 
-                nombre = nombre[:contador]+'\n'+nombre[contador:]
-            contador+=20
-    artistas = controller.darArtistasObra(iD, catalog)
-    if len(artistas) > 21:
-        contador = 21
-        while contador < len(artistas):
-            if(artistas[contador-2] == ' '):
-                artistas = artistas[:contador-1]+'\n'+artistas[contador-1:]
-            else: 
-                artistas = artistas[:contador]+'\n'+artistas[contador:]
-            contador+=21
-   
-    medio = artwork['Medium']
-    if len(medio) > 20:
-        contador = 20
-        while contador < len(medio):
-            if (medio[contador-2]==' '):
-                medio = medio[:contador-1]+'\n'+medio[contador-1:]
-            else:
-                medio = medio[:contador]+'\n'+medio[contador:]
-            contador+=20
-    fecha = artwork['Date']
-    if (artwork['Dimensions'] != ''):
-        dimensiones = artwork['Dimensions']
-        if len(dimensiones) > 22:
-            contador = 22
-            while contador < len(dimensiones):
-                if(dimensiones[contador-2]==' '):
-                    dimensiones = dimensiones[:contador-1]+'\n'+dimensiones[contador-1:]
-                else:
-                    dimensiones = dimensiones[:contador]+'\n'+dimensiones[contador:]
-                contador+=22
-    else:
-        dimensiones = 'Unknown'
-    departamento = artwork['Department']
-    clasificacion = artwork['Classification']
-    if(artwork['URL'] != ''):
-        Url = artwork['URL']
-        if len(Url) >18:
-            contador = 18
-            while contador < len(Url):
-                Url = Url[:contador]+'\n'+Url[contador:]
-                contador+=18
-    else:
-        Url = 'Unknown'
-    return iD,nombre,artistas,medio,fecha,dimensiones,departamento,clasificacion,Url
-
 
 def imprimir_ultimostresworks(lista):
     print("Estas son las ultimas tres obras: ")
@@ -207,34 +151,42 @@ while True:
         pass
 
     elif int(inputs[0]) == 3:
-        lista = catalog['artworks']
-        muestra = input('Seleccione el tamaño de la muestra\n')
-        if(muestra.isnumeric()):
-            muestra = int(muestra)
-            total = lt.size(lista)
-            if(muestra > total or muestra <= 0):
-                print('Tamaño inválido')
-            else:
-                ordenamiento = ''
-                respuesta = None
-                printMenuOrdenamientos()
-                opciones = input('Seleccione una opción para continuar\n')
-                if int(opciones[0]) == 1:
-                    result = controller.ordenarObrasPorFecha('insertion', muestra, catalog)
-                elif int(opciones[0]) == 2:
-                    result = controller.ordenarObrasPorFecha('shell', muestra, catalog)
-                elif int(opciones[0]) == 3:
-                    result = controller.ordenarObrasPorFecha('merge', muestra, catalog)
-                elif int(opciones[0]) == 4:
-                    result = controller.ordenarObrasPorFecha('quick', muestra, catalog)
-                if result != None:
-                    print("Para la muestra de", muestra, " elementos, el tiempo (mseg) es: ", str(result[0]))
-                    imprimir_primerostresworksFecha(result[1])
-                    imprimir_ultimostresworksFecha(result[1])
-                else:
-                    print("Seleccione una opción válida")   
+        fechaInicial = input('Seleccione la fecha inicial en formato AAAA-MM-DD\n')
+        if (len(fechaInicial.split('-')) != 3):
+            print('Ha ingresado una fecha inicial inválida')
         else:
-            print('Tamaño inválido')
+            fechaFinal = input('Seleccione la fecha final en formato AAAA-MM-DD\n')
+            if(len(fechaFinal.split('-')) != 3):
+                print('Ha ingresado una fecha inicial inválida')
+            else:
+                lista = controller.ordenarObrasPorFecha(fechaInicial, fechaFinal, catalog)[1]
+                total = lt.size(lista)
+                print('El MOMA adquirió '+str(total)+ ' piezas únicas entre ' + fechaInicial + ' y '+fechaFinal)
+                compradas = controller.darObrasCompradas(lista)
+                artistas = controller.darCantidadArtistas(lista)
+                print('Con '+str(artistas) +' artistas diferentes y compró '+str(compradas) +' de ellas')
+                obras = []
+                contador = 0
+                puesto = 1
+                while contador<3:
+                    info = controller.darInfoObra(lt.getElement(lista, puesto)['Obra'], catalog)
+                    info = [info[0],info[1],info[2],info[3],info[4],info[5],info[8],info[9]]
+                    obras.append(info)
+                    puesto+=1
+                    contador+=1
+                contador = 0
+                puesto = lt.size(lista)-2
+                while contador<3:
+                    info = controller.darInfoObra(lt.getElement(lista, puesto)['Obra'], catalog)
+                    info = [info[0],info[1],info[2],info[3],info[5],info[4],info[9],info[8]]
+                    obras.append(info)
+                    puesto+=1
+                    contador+=1
+                print('Las primeras y últimas 3 obras en el rango son...')
+                print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Dimensions','Date','DateAcquired','URL'], tablefmt='fancy_grid'))
+
+
+        
 
     elif int(inputs[0]) == 4:
         pass
@@ -257,17 +209,21 @@ while True:
         contador = 0
         puesto = 1
         while contador<3:
-            obras.append(darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto)))
+            info = controller.darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto), catalog)
+            info = [info[0],info[1],info[2],info[3],info[4],info[5],info[6],info[7],info[8]]
+            obras.append(info)
             puesto+=1
             contador+=1
         contador = 0
         puesto = lt.size(obrasPrimeraNacionalidad)-2
         while contador<3:
-            obras.append(darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto)))
+            info = controller.darInfoObra(lt.getElement(obrasPrimeraNacionalidad, puesto), catalog)
+            info = [info[0],info[1],info[2],info[3],info[4],info[5],info[6],info[7],info[8]]
+            obras.append(info)
             puesto+=1
             contador+=1
         print('La nacionalidad con mayor cantidad de obras en el museo es '+primeraNacionalidad['Nombre']+', que tiene '+str(primeraNacionalidad['Cantidad'])+' obras asociadas')
-        print('La primera y las últimas tres obras de la nacionalidad '+primeraNacionalidad['Nombre']+' son:')
+        print('La primeras y las últimas tres obras de la nacionalidad '+primeraNacionalidad['Nombre']+' son:')
         print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Department','Classification','URL'], tablefmt='fancy_grid'))
 
 
