@@ -152,11 +152,13 @@ while True:
 
     elif int(inputs[0]) == 3:
         fechaInicial = input('Seleccione la fecha inicial en formato AAAA-MM-DD\n')
-        if (len(fechaInicial.split('-')) != 3):
+        formato = fechaInicial.split('-')
+        if (len(formato) != 3 or len(formato[0]) != 4 or len(formato[1]) != 2 or len(formato[2]) != 2):
             print('Ha ingresado una fecha inicial inválida')
         else:
             fechaFinal = input('Seleccione la fecha final en formato AAAA-MM-DD\n')
-            if(len(fechaFinal.split('-')) != 3):
+            formato = fechaFinal.split('-')
+            if(len(formato) != 3 or len(formato[0]) != 4 or len(formato[1]) != 2 or len(formato[2]) != 2 or fechaInicial > fechaFinal):
                 print('Ha ingresado una fecha inicial inválida')
             else:
                 lista = controller.ordenarObrasPorFecha(fechaInicial, fechaFinal, catalog)[1]
