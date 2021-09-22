@@ -72,6 +72,11 @@ def loadArtworks(catalog):
 # Funciones de consulta sobre el catálogo
 def ordenarObrasPorFecha(inicial, final, catalog):
     return model.ordenarObrasPorFecha(inicial, final, catalog)
+def organizarObrasEstilo(nombre,catalog):
+    if model.organizarObrasEstilo(nombre,catalog)==False:
+        return False
+    else:
+        return model.organizarObrasEstilo(nombre,catalog)
 
 def ordenarArtistasPorFecha(inicial, final, catalog):
     return model.ordenarArtistasPorFecha(inicial, final, catalog)
@@ -90,6 +95,8 @@ def darCantidadArtistas(obras):
 
 def darInfoObra(artwork,catalog):
     return model.darInfoObra(artwork,catalog)
+def darInfoID(name,catalog):
+    return model.crearlistaID(name,catalog)
 
 def darInfoArtista(artist,catalog):
     return model.darInfoArtista(artist,catalog)
