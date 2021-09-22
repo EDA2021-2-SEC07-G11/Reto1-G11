@@ -236,7 +236,7 @@ def listamedios(listaobras,idart):
             linea.append(elemento["Obra"]["Department"])
             linea.append(elemento["Obra"]["Classification"])
             listmas_u_est.append(linea)
-    return idart,len(listaest),len(listamedios),listadef, listmas_u_est
+    return idart,len(listanum),len(listamedios),listadef, listmas_u_est
 def darInfoObra(artwork, catalog):
     iD = artwork['ObjectID']
     nombre = artwork['Title']
