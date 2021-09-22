@@ -53,12 +53,6 @@ def printMenuTipos():
     print("1- ARRAY_LIST")
     print("2- SINGLE_LINKED")
 
-def printMenuOrdenamientos():
-    print("Seleccione el tipo de ordenamiento")
-    print("1- Insertion Sort")
-    print("2- Shell Sort")
-    print("3- Merge Sort")
-    print("4- Quick Sort")
 
 catalog = None
 
@@ -149,7 +143,35 @@ while True:
         imprimir_ultimostresartist(lista)
     
     elif int(inputs[0]) == 2:
-        pass
+        fechaInicial = input('Seleccione el año inicial de nacimiento AAAA\n')
+        if (len(fechaInicial)!= 4):
+            print('Ha ingresado una año inicial inválido')
+        else:
+            fechaFinal = input('Seleccione el año final de nacimiento AAAA\n')
+            
+            if(len(fechaFinal) != 4 or fechaInicial > fechaFinal):
+                print('Ha ingresado un año final inválido')
+            else:
+                lista = controller.ordenarArtistasPorFecha(fechaInicial, fechaFinal, catalog)[1]
+                total = lt.size(lista)
+                print('Hay '+str(total)+' artistas nacidos entre '+fechaInicial+' y '+ fechaFinal)
+                artistas = []
+                contador = 0
+                puesto = 1
+                while contador<3:
+                    info = controller.darInfoArtista(lt.getElement(lista, puesto), catalog)
+                    artistas.append(info)
+                    puesto+=1
+                    contador+=1
+                contador = 0
+                puesto = lt.size(lista)-2
+                while contador<3:
+                    info = controller.darInfoArtista(lt.getElement(lista, puesto), catalog)
+                    artistas.append(info)
+                    puesto+=1
+                    contador+=1
+                print('Los primeras y últimos 3 artistas en el rango son...')
+                print(tabulate(artistas, headers=['ConstituentID', 'DisplayName', 'BeginDate','Nationality','Gender','ArtistBio','Wiki QID','ULAN'], tablefmt='fancy_grid'))
 
     elif int(inputs[0]) == 3:
         fechaInicial = input('Seleccione la fecha inicial en formato AAAA-MM-DD\n')
@@ -160,7 +182,7 @@ while True:
             fechaFinal = input('Seleccione la fecha final en formato AAAA-MM-DD\n')
             formato = fechaFinal.split('-')
             if(len(formato) != 3 or len(formato[0]) != 4 or len(formato[1]) != 2 or len(formato[2]) != 2 or fechaInicial > fechaFinal):
-                print('Ha ingresado una fecha inicial inválida')
+                print('Ha ingresado una fecha final inválida')
             else:
                 lista = controller.ordenarObrasPorFecha(fechaInicial, fechaFinal, catalog)[1]
                 total = lt.size(lista)

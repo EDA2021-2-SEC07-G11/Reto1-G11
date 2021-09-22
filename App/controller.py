@@ -78,6 +78,9 @@ def organizarObrasEstilo(nombre,catalog):
     else:
         return model.organizarObrasEstilo(nombre,catalog)
 
+def ordenarArtistasPorFecha(inicial, final, catalog):
+    return model.ordenarArtistasPorFecha(inicial, final, catalog)
+
 def darListaNacionalidadesOrdenada(catalog):
     return model.ordenarListaNacionalidades(catalog)
 
@@ -94,3 +97,6 @@ def darInfoObra(artwork,catalog):
     return model.darInfoObra(artwork,catalog)
 def darInfoID(name,catalog):
     return model.crearlistaID(name,catalog)
+
+def darInfoArtista(artist,catalog):
+    return model.darInfoArtista(artist,catalog)
