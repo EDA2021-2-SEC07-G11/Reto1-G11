@@ -115,6 +115,10 @@ def agregarObras(lista, obras):
             lt.addLast(lista, i)
             nuevas += 1
     return nuevas
+def crearlistaID(name,catalogo):
+    for artista in catalogo["artists"]:
+        idart=artista["Artista"]["ConstituentID"]
+        return idart
 
 
 
@@ -158,7 +162,81 @@ def darCantidadArtistas(obras):
             if not(lt.isPresent(artistas, artista)):
                 lt.addLast(artistas, artista)
     return lt.size(artistas)
+def organizarObrasEstilo(nombre,catalog):
+    if nombreobras(nombre,catalog)== False:
+        return False
+    else:
 
+
+        listaobras=nombreobras(nombre,catalog)[0]
+        idart=nombreobras(nombre,catalog)[1]
+        return listamedios(listaobras,idart)
+
+def nombreobras(nombreart,catalog):
+    listaart=(catalog["artists"])
+    listaobr=(catalog["artworks"])
+    encontro=False
+    for i in range(0,(lt.size(listaart))):
+        elemento=lt.getElement(listaart,i)
+        nombre=elemento['Artista']['DisplayName']
+        lnombre=nombre.split(",")
+        nombre=lnombre[0]
+        if nombreart==nombre:
+            encontro=True
+            idart=elemento["Artista"]["ConstituentID"]
+    if encontro==True:
+        listaobrart=lt.newList("ARRAY_LIST")        
+        for e in range(0,(lt.size(listaobr))):
+            elemento=lt.getElement(listaobr,e)
+            idartobr=elemento["Obra"]["ConstituentID"]
+            if idart in idartobr:
+                lt.addLast(listaobrart,elemento)
+        return listaobrart,idart
+    else:
+        return False
+def listamedios(listaobras,idart):
+    listamedios=[]
+    for b in range(0,(lt.size(listaobras))):
+        elemento=lt.getElement(listaobras,b)
+        medio=elemento["Obra"]["Medium"]
+        listamedios.append(medio)
+    listaest=[]
+    listanum=[]
+    for elemento in listamedios:
+        if elemento not in listaest:
+            listaest.append(elemento)
+            cuenta=listamedios.count(elemento)
+            listaest.append(cuenta)
+            listanum.append(cuenta)
+    maximo=max(listanum)
+    listadef=[]
+    while len(listadef)<5:
+        for n in range(0,len(listaest)-1):
+            estilo=listaest[n]
+            if listaest[n+1]==maximo:
+                listap=[]
+                listap.append(estilo)
+                listap.append(maximo)
+                listadef.append(listap)
+        maximo+=-1
+    mas_u_est=listadef[0][0]
+
+    listmas_u_est=[]
+    for b in range(0,(lt.size(listaobras))):
+        elemento=lt.getElement(listaobras,b)
+        medio=elemento["Obra"]["Medium"]
+        if medio==mas_u_est:
+            linea=[]
+            linea.append(elemento["Obra"]["ObjectID"])
+            linea.append(elemento["Obra"]["Title"])
+            linea.append(elemento["Obra"]["Medium"])
+            linea.append(elemento["Obra"]["Date"])
+            linea.append(elemento["Obra"]["Dimensions"])
+            linea.append(elemento["Obra"]["DateAcquired"])
+            linea.append(elemento["Obra"]["Department"])
+            linea.append(elemento["Obra"]["Classification"])
+            listmas_u_est.append(linea)
+    return idart,len(listanum),len(listamedios),listadef, listmas_u_est
 def darInfoObra(artwork, catalog):
     iD = artwork['ObjectID']
     nombre = artwork['Title']
@@ -246,7 +324,7 @@ def compararNacionalidades(nt1, nt2):
         return True
     else:
         return False
-    
+   
 # Funciones de ordenamiento
 
 def ordenarObrasPorFecha(inicial, final, catalog):

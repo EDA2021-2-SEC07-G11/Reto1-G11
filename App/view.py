@@ -84,7 +84,7 @@ def printarworkInfo(artwork):
     print()
 
 def printartist(artist):
-    print('Nombre: ' + artist['Artista']['DisplayName'] )
+    print('Nombre: ' + artist['Artista']['DisplayName'])
 
 
 def imprimir_ultimostresworks(lista):
@@ -122,6 +122,7 @@ def imprimir_ultimostresartist(lista):
         printartist(lt.getElement(lista,puesto))
         puesto+=-1
         contador+=1
+
 
 """
 Menu principal
@@ -191,7 +192,32 @@ while True:
         
 
     elif int(inputs[0]) == 4:
-        pass
+        nombreart=input("Ingrese el nombre del artista:  ")
+        listaobras=controller.organizarObrasEstilo(nombreart,catalog)
+        if listaobras==False:
+            print("El nombre que escribio no coincide con nuestra base de datos.")
+        else:
+            numlen=(listaobras)[1]
+            idart=(listaobras)[0]
+            stylesn=(listaobras)[2]
+            listamediosm=(listaobras)[4]
+            listaest=(listaobras)[3]
+            print(nombreart + " with MOMA ID "+idart+" has ",stylesn," pieces in his/her name at the museum.")
+            print("There are ",numlen," different mediums/techniques in his/her work.")
+            print("Her/His top 5 Medium/Techniques are:")
+            print(tabulate(listaest,headers=["MediumName","Count"],tablefmt="orgtbl"))
+            print("His/Her most used Medium/Technique is :" ,listaest[0][0]," with ", listaest[0][1]," pieces.")
+            print("A sample of ",listaest[0][1],listaest[0][0],"from the colection are:")
+            print(tabulate(listamediosm,headers=["ObjectID","Title","Medium","Date","Dimensions","DateAcquired","Department","Classification"],tablefmt="orgtbl"))
+
+
+
+
+            
+
+        
+
+
 
     elif int(inputs[0]) == 5:
         print('Clasificando los países por el número de obras asociadas...')
