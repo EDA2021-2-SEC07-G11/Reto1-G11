@@ -211,11 +211,11 @@ def darInfoObra(artwork, catalog):
     clasificacion = artwork['Classification']
     if(artwork['URL'] != ''):
         Url = artwork['URL']
-        if len(Url) >17:
-            contador = 17
+        if len(Url) >16:
+            contador = 16
             while contador < len(Url):
                 Url = Url[:contador]+'\n'+Url[contador:]
-                contador+=17
+                contador+=16
     else:
         Url = 'Unknown'
 
@@ -254,6 +254,73 @@ def darInfoArtista(artist, catalog):
         ulan = 'Unknown'
 
     return iD,nombre,fecha,nacionalidad,genero,bio,wiki,ulan
+
+def darObrasDepartamento(departamento, catalog):
+    obras = catalog['artworks']
+    lista = lt.newList()
+    for i in lt.iterator(obras):
+        obra = i['Obra']
+        depObra = obra['Department']
+        if depObra == departamento:
+            lt.addLast(lista, i)
+    return lista
+
+def darPesoTotal(lista):
+    peso = 0
+    for i in lt.iterator(lista):
+        obra = i['Obra']
+        if(obra['Weight (kg)'] != ''):
+            peso += float(obra['Weight (kg)'])
+    return peso
+
+def darCostoObra(artwork):
+    costo = 0
+    if artwork['Weight (kg)'] != '':
+        peso = float(artwork['Weight (kg)'])
+    else:
+        peso = 0
+    tamano = 0
+    alto = artwork['Height (cm)']
+    largo = artwork['Length (cm)']
+    ancho = artwork['Width (cm)']
+    if alto != '':
+        alto = float(alto)/100
+        tamano = alto
+        if largo != '':
+            largo = float(largo)/100
+            tamano *= largo
+            if(ancho != ''):
+                ancho = float(ancho)/100
+                tamano *= ancho
+        else:
+            if(ancho != ''):
+                ancho = float(ancho)/100
+                tamano *= ancho
+    elif largo != '':
+        largo = float(largo)/100
+        tamano = largo
+        if ancho != '':
+            ancho = float(ancho)/100
+            tamano *= ancho
+    elif ancho != '':
+        ancho = float(ancho)/100
+        tamano = ancho
+    
+    if(peso>0 or tamano > 0):
+        if (peso * 72 >= tamano*72):
+            costo = peso * 72
+        else:
+            costo = tamano *72
+    else:
+        costo = 48
+    return costo
+
+def darCostoLista(lista):
+    costo = 0
+    for i in lt.iterator(lista):
+        obra = i['Obra']
+        costo += darCostoObra(obra)
+    return costo
 
 
 
@@ -299,6 +366,31 @@ def compararNacionalidades(nt1, nt2):
         return True
     else:
         return False
+
+def compararObrasPorCosto(artwork1, artwork2):
+    artwork1 = artwork1['Obra']
+    costo1 = darCostoObra(artwork1)
+    artwork2 = artwork2['Obra']
+    costo2 =darCostoObra(artwork2)
+    if(costo1 > costo2):
+        return True
+    else:
+        return False
+
+def compararObrasPorVejez(artwork1, artwork2):
+    artwork1 = artwork1['Obra']
+    fecha1 = artwork1['Date']
+    artwork2 = artwork2['Obra']
+    fecha2 = artwork2['Date']
+    if (fecha1 == ''):
+        return False
+    elif fecha2 == '':
+        return True
+    else:
+        if(fecha1 < fecha2):
+            return True
+        else:
+            return False
     
 # Funciones de ordenamiento
 
@@ -321,3 +413,11 @@ def ordenarArtistasPorFecha(inicial, final, catalog):
     stop_time = time.process_time()
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, lista
+
+def ordenarObrasDepartamento(departamento, catalog):
+    lista = darObrasDepartamento(departamento, catalog)
+    lista = merge.sort(lista, compararObrasPorCosto)
+    return lista
+
+def ordenarObrasPorVejez(lista):
+    return merge.sort(lista, compararObrasPorVejez)

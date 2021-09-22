@@ -194,7 +194,7 @@ while True:
                 puesto = 1
                 while contador<3:
                     info = controller.darInfoObra(lt.getElement(lista, puesto)['Obra'], catalog)
-                    info = [info[0],info[1],info[2],info[3],info[4],info[5],info[8],info[9]]
+                    info = [info[0],info[1],info[2],info[3],info[5],info[4],info[9],info[8]]
                     obras.append(info)
                     puesto+=1
                     contador+=1
@@ -253,7 +253,41 @@ while True:
 
 
     elif int(inputs[0]) == 6:
-        pass
+        departamento = input('Seleccione el departamento del cual desea transportar las obras\n')
+        lista = controller.darObrasDepartamento(departamento, catalog)
+        costo = controller.darCostoObras(lista)
+        peso = controller.darPesoObras(lista)
+        print('El MoMA va a transportar '+str(lt.size(lista))+' artefactos del departemento '+departamento)
+        print('RECUERDE! NO toda la información del MoMA está completa!!!... Los siguientes son estimados.')
+        print('Peso de carga estimado (kg): '+str(peso))
+        print('Costo de carga estimado (USD): '+str(round(costo, 3)))
+        if not(lt.size(lista) == 0):
+            obras = []
+            contador = 0
+            puesto = 1
+            while contador<5:
+                info = controller.darInfoObra(lt.getElement(lista, puesto)['Obra'], catalog)
+                info = [info[0],info[1],info[2],info[3],info[4],info[5],info[7],controller.darCostoObra(lt.getElement(lista, puesto)['Obra']),info[8]]
+                obras.append(info)
+                puesto+=1
+                contador+=1
+            print('Los 5 objetos más costosos a transportar son:')
+            print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Classification','TransCost (USD)','URL'], tablefmt='fancy_grid'))
+            lista = controller.darObrasPorVejez(lista)
+            obras = []
+            contador = 0
+            puesto = 1
+            while contador<5:
+                info = controller.darInfoObra(lt.getElement(lista, puesto)['Obra'], catalog)
+                info = [info[0],info[1],info[2],info[3],info[4],info[5],info[7],controller.darCostoObra(lt.getElement(lista, puesto)['Obra']),info[8]]
+                obras.append(info)
+                puesto+=1
+                contador+=1
+            print('Los 5 objetos más antiguos a transportar son:')
+            print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Classification','TransCost (USD)','URL'], tablefmt='fancy_grid'))
+
+
+
 
     elif int(inputs[0]) == 7:
         pass

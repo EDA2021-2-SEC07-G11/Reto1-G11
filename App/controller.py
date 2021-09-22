@@ -93,3 +93,18 @@ def darInfoObra(artwork,catalog):
 
 def darInfoArtista(artist,catalog):
     return model.darInfoArtista(artist,catalog)
+
+def darCostoObras(lista):
+    return model.darCostoLista(lista)
+
+def darPesoObras(lista):
+    return model.darPesoTotal(lista)
+
+def darObrasDepartamento(departamento, catalog):
+    return model.ordenarObrasDepartamento(departamento, catalog)
+
+def darObrasPorVejez(lista):
+    return model.ordenarObrasPorVejez(lista)
+
+def darCostoObra(artwork):
+    return model.darCostoObra(artwork)
