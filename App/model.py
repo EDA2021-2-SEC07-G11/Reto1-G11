@@ -141,6 +141,15 @@ def darObrasEnRangoFecha(catalog, inicial, final):
             lt.addLast(lista, i)
     return lista
 
+def darArtistasEnRangoFecha(catalog, inicial, final):
+    artistas = catalog['artists']
+    lista = lt.newList()
+    for i in lt.iterator(artistas):
+        fecha = i['Artista']['BeginDate']
+        if(fecha >= inicial and fecha <= final):
+            lt.addLast(lista, i['Artista'])
+    return lista
+
 def darObrasCompradas(lista):
     total = 0
     for i in lt.iterator(lista):
@@ -214,7 +223,37 @@ def darInfoObra(artwork, catalog):
     return iD,nombre,artistas,medio,fecha,dimensiones,departamento,clasificacion,Url, fechaCompra
 
 
+def darInfoArtista(artist, catalog):
 
+    iD = artist['ConstituentID']
+
+    nombre = artist['DisplayName']
+
+    fecha = artist['BeginDate']
+
+    nacionalidad = artist['Nationality']
+
+    if nacionalidad == '':
+        nacionalidad = 'Unknown'
+
+    genero = artist['Gender']
+
+    if genero == '':
+        genero = 'Unknown'
+
+    bio = artist['ArtistBio']
+    
+    wiki = artist['Wiki QID']
+
+    if wiki == '':
+        wiki = 'Unknown'
+
+    ulan = artist['ULAN']
+
+    if ulan == '':
+        ulan = 'Unknown'
+
+    return iD,nombre,fecha,nacionalidad,genero,bio,wiki,ulan
 
 
 
@@ -232,9 +271,23 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     artwork1: informacion de la primera obra que incluye su valor 'DateAcquired'
     artwork2: informacion de la segunda obra que incluye su valor 'DateAcquired'
     """
-    obra1 = artwork1['Obra']['DateAcquired']
-    obra2 = artwork2['Obra']['DateAcquired']
-    if obra1 < obra2:
+    fecha1 = artwork1['Obra']['DateAcquired']
+    fecha2 = artwork2['Obra']['DateAcquired']
+    if fecha1 < fecha2:
+        return True
+    else:
+        return False
+
+def cmpArtistByDate(artist1, artist2):
+    """
+    Devuelve verdadero (True) si el 'DateAcquired' de artwork1 es menores que el de artwork2
+    Args:
+    artwork1: informacion de la primera obra que incluye su valor 'DateAcquired'
+    artwork2: informacion de la segunda obra que incluye su valor 'DateAcquired'
+    """
+    fecha1 = artist1['BeginDate']
+    fecha2 = artist2['BeginDate']
+    if fecha1 < fecha2:
         return True
     else:
         return False
@@ -260,3 +313,11 @@ def ordenarObrasPorFecha(inicial, final, catalog):
 def ordenarListaNacionalidades(catalog):
     nacionalidades = crearListaNacionalidades(catalog)
     return merge.sort(nacionalidades, compararNacionalidades)
+
+def ordenarArtistasPorFecha(inicial, final, catalog):
+    lista = darArtistasEnRangoFecha(catalog, inicial, final)
+    start_time = time.process_time()
+    lista= merge.sort(lista, cmpArtistByDate)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, lista

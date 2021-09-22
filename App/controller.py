@@ -73,6 +73,9 @@ def loadArtworks(catalog):
 def ordenarObrasPorFecha(inicial, final, catalog):
     return model.ordenarObrasPorFecha(inicial, final, catalog)
 
+def ordenarArtistasPorFecha(inicial, final, catalog):
+    return model.ordenarArtistasPorFecha(inicial, final, catalog)
+
 def darListaNacionalidadesOrdenada(catalog):
     return model.ordenarListaNacionalidades(catalog)
 
@@ -87,3 +90,6 @@ def darCantidadArtistas(obras):
 
 def darInfoObra(artwork,catalog):
     return model.darInfoObra(artwork,catalog)
+
+def darInfoArtista(artist,catalog):
+    return model.darInfoArtista(artist,catalog)
