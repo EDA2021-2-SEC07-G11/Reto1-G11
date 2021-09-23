@@ -56,11 +56,11 @@ def printMenuTipos():
 
 catalog = None
 
-def initCatalog(tipo):
+def initCatalog():
     """
     Inicializa el catalogo
     """
-    return controller.initCatalog(tipo)
+    return controller.initCatalog()
     
 def loadData(catalog):
     """
@@ -125,15 +125,7 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        tipo = ''
-        printMenuTipos()
-        opciones = input('Seleccione una opción para continuar\n')
-        if int(opciones[0]) == 1:
-            tipo = 'ARRAY_LIST'
-        elif int(opciones[0]) == 2:
-            tipo = 'SINGLE_LINKED'
-        print("Cargando información de los archivos ....")
-        catalog = initCatalog(tipo)
+        catalog = initCatalog()
         loadData(catalog)
         print('Obras Cargadas: ' + str(lt.size(catalog['artworks'])))
         lista=catalog["artworks"]
@@ -311,6 +303,7 @@ while True:
                 contador+=1
             print('Los 5 objetos más antiguos a transportar son:')
             print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Classification','TransCost (USD)','URL'], tablefmt='fancy_grid'))
+
 
 
 
