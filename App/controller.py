@@ -69,6 +69,7 @@ def loadArtworks(catalog):
 # Funciones de ordenamiento
 
     
+    
 
 # Funciones de consulta sobre el catálogo
 def ordenarObrasPorFecha(inicial, final, catalog):

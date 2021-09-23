@@ -28,6 +28,7 @@ assert cf
 default_limit = 1000
 sys.setrecursionlimit(default_limit*10)
 from tabulate import tabulate
+import time
 
 
 """
@@ -144,7 +145,7 @@ while True:
             if(len(fechaFinal) != 4 or fechaInicial > fechaFinal):
                 print('Ha ingresado un año final inválido')
             else:
-                lista = controller.ordenarArtistasPorFecha(fechaInicial, fechaFinal, catalog)[1]
+                lista = controller.ordenarArtistasPorFecha(fechaInicial, fechaFinal, catalog)
                 total = lt.size(lista)
                 print('Hay '+str(total)+' artistas nacidos entre '+fechaInicial+' y '+ fechaFinal)
                 artistas = []
@@ -164,6 +165,7 @@ while True:
                     contador+=1
                 print('Los primeras y últimos 3 artistas en el rango son...')
                 print(tabulate(artistas, headers=['ConstituentID', 'DisplayName', 'BeginDate','Nationality','Gender','ArtistBio','Wiki QID','ULAN'], tablefmt='fancy_grid'))
+                
 
     elif int(inputs[0]) == 3:
         fechaInicial = input('Seleccione la fecha inicial en formato AAAA-MM-DD\n')
@@ -176,7 +178,7 @@ while True:
             if(len(formato) != 3 or len(formato[0]) != 4 or len(formato[1]) != 2 or len(formato[2]) != 2 or fechaInicial > fechaFinal):
                 print('Ha ingresado una fecha final inválida')
             else:
-                lista = controller.ordenarObrasPorFecha(fechaInicial, fechaFinal, catalog)[1]
+                lista = controller.ordenarObrasPorFecha(fechaInicial, fechaFinal, catalog)
                 total = lt.size(lista)
                 print('El MOMA adquirió '+str(total)+ ' piezas únicas entre ' + fechaInicial + ' y '+fechaFinal)
                 compradas = controller.darObrasCompradas(lista)
@@ -207,10 +209,12 @@ while True:
 
     elif int(inputs[0]) == 4:
         nombreart=input("Ingrese el nombre del artista:  ")
+        start_time = time.process_time()
         listaobras=controller.organizarObrasEstilo(nombreart,catalog)
         if listaobras==False:
             print("El nombre que escribio no coincide con nuestra base de datos.")
         else:
+
             numlen=(listaobras)[1]
             idart=(listaobras)[0]
             stylesn=(listaobras)[2]
@@ -224,13 +228,7 @@ while True:
             print("A sample of ",listaest[0][1],listaest[0][0],"from the colection are:")
             print(tabulate(listamediosm,headers=["ObjectID","Title","Medium","Date","Dimensions","DateAcquired","Department","Classification"],tablefmt="orgtbl"))
 
-
-
-
             
-
-        
-
 
 
     elif int(inputs[0]) == 5:
@@ -272,7 +270,7 @@ while True:
 
     elif int(inputs[0]) == 6:
         departamento = input('Seleccione el departamento del cual desea transportar las obras\n')
-        lista = controller.darObrasDepartamento(departamento, catalog)[1]
+        lista = controller.darObrasDepartamento(departamento, catalog)
         costo = controller.darCostoObras(lista)
         peso = controller.darPesoObras(lista)
         print('El MoMA va a transportar '+str(lt.size(lista))+' artefactos del departemento '+departamento)
@@ -291,7 +289,7 @@ while True:
                 contador+=1
             print('Los 5 objetos más costosos a transportar son:')
             print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Classification','TransCost (USD)','URL'], tablefmt='fancy_grid'))
-            lista = controller.darObrasPorVejez(lista)[1]
+            lista = controller.darObrasPorVejez(lista)
             obras = []
             contador = 0
             puesto = 1
@@ -303,6 +301,7 @@ while True:
                 contador+=1
             print('Los 5 objetos más antiguos a transportar son:')
             print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Classification','TransCost (USD)','URL'], tablefmt='fancy_grid'))
+
 
 
 

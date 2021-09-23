@@ -469,11 +469,8 @@ def compararObrasPorVejez(artwork1, artwork2):
 
 def ordenarObrasPorFecha(inicial, final, catalog):
     lista = darObrasEnRangoFecha(catalog, inicial, final)
-    start_time = time.process_time()
     lista= merge.sort(lista, cmpArtworkByDateAcquired)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, lista
+    return lista
 
 def ordenarListaNacionalidades(catalog):
     nacionalidades = crearListaNacionalidades(catalog)
@@ -481,25 +478,16 @@ def ordenarListaNacionalidades(catalog):
 
 def ordenarArtistasPorFecha(inicial, final, catalog):
     lista = darArtistasEnRangoFecha(catalog, inicial, final)
-    start_time = time.process_time()
     lista= merge.sort(lista, cmpArtistByDate)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, lista
+    return lista
 
 def ordenarObrasDepartamento(departamento, catalog):
     lista = darObrasDepartamento(departamento, catalog)
-    start_time = time.process_time()
     lista = merge.sort(lista, compararObrasPorCosto)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, lista
+    return lista
 
 def ordenarObrasPorVejez(lista):
-    start_time = time.process_time()
     lista = merge.sort(lista, compararObrasPorVejez)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, lista
+    return lista
     
 
