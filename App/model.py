@@ -489,9 +489,17 @@ def ordenarArtistasPorFecha(inicial, final, catalog):
 
 def ordenarObrasDepartamento(departamento, catalog):
     lista = darObrasDepartamento(departamento, catalog)
+    start_time = time.process_time()
     lista = merge.sort(lista, compararObrasPorCosto)
-    return lista
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, lista
 
 def ordenarObrasPorVejez(lista):
-    return merge.sort(lista, compararObrasPorVejez)
+    start_time = time.process_time()
+    lista = merge.sort(lista, compararObrasPorVejez)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, lista
+    
 

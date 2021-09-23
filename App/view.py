@@ -272,7 +272,7 @@ while True:
 
     elif int(inputs[0]) == 6:
         departamento = input('Seleccione el departamento del cual desea transportar las obras\n')
-        lista = controller.darObrasDepartamento(departamento, catalog)
+        lista = controller.darObrasDepartamento(departamento, catalog)[1]
         costo = controller.darCostoObras(lista)
         peso = controller.darPesoObras(lista)
         print('El MoMA va a transportar '+str(lt.size(lista))+' artefactos del departemento '+departamento)
@@ -291,7 +291,7 @@ while True:
                 contador+=1
             print('Los 5 objetos más costosos a transportar son:')
             print(tabulate(obras, headers=['ObjectID', 'Title', 'ArtistsNames','Medium','Date','Dimensions','Classification','TransCost (USD)','URL'], tablefmt='fancy_grid'))
-            lista = controller.darObrasPorVejez(lista)
+            lista = controller.darObrasPorVejez(lista)[1]
             obras = []
             contador = 0
             puesto = 1
